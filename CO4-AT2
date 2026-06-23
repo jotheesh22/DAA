@@ -1,0 +1,66 @@
+Question 1: Warehouse Delivery Route Optimization (Greedy Strategy)
+A logistics company operates a fleet of delivery vehicales that must deliver packages to multiple locations Each route has a different delivery cost and distance. The company wants to minimize the total transportation cost while ensuring all locations are connected.
+Tasks:
+1. Model the program as a graph and identify an appropriate greedy algorithm to solve it 
+2. Explain how the algorithm selects routes to achieve minimum cost 
+3. Analyze the time complexity of the chosen algorithm. 
+4. Discuss the adventages and limitations of using a greedy approach for this problem.
+Expected Concepts: Minimum Spanning Tree,Kruskal's Algorithm,Prim's Algorithm,Greedy Strategy.
+
+Answer:
+1. Modeling the Problem:
+*The logistics network is modeled as a graph.
+*Vertices (nodes): Represent delivery locations such as warehouses or customer points.
+*Edges: Represent delivery routes, each with a weight corresponding to transportation cost or distance.
+
+Objective: 
+*Connect all vertices with minimum total cost while ensuring full connectivity.
+*This is equivalent to solving a Minimum Spanning Tree (MST) problem in graph theory.
+
+2. Greedy Algorithm Choice:
+*Two greedy algorithms are commonly used for MST:
+*Kruskal’s Algorithm: Sorts all edges by cost and adds them one by one, avoiding cycles.
+*Prim’s Algorithm: Starts from a vertex and grows the tree by repeatedly choosing the cheapest edge connecting to a new vertex.
+
+Kruskal’s Algorithm is most suitable for logistics route optimization because:
+
+*It directly compares route costs.
+*It works well for sparse graphs (common in delivery networks).
+
+Cycle avoidance ensures no redundant routes are chosen.
+
+3. Route Selection Process (Kruskal’s Algorithm)
+Step 1: Sort all delivery routes (edges) by cost.
+
+Step 2: Pick the lowest-cost route that does not form a cycle.
+
+Step 3: Use Union-Find data structure to efficiently check for cycles.
+
+Step 4: Repeat until all locations are connected.
+
+Result: A Minimum Spanning Tree (MST) → minimum transportation cost with full connectivity.
+
+4. Time Complexity
+Kruskal’s Algorithm:
+Sorting edges: 
+𝑂(𝐸log𝐸)
+Union-Find operations: 
+𝑂(𝐸⋅𝛼(𝑉)) (almost linear)
+Overall: 
+𝑂(𝐸log 𝐸)
+Prim’s Algorithm:
+With adjacency list + priority queue: 
+𝑂(𝐸log 𝑉)
+Both are efficient, but Kruskal’s is simpler for route-based optimization.
+5. Advantages of Greedy Approach
+*Simple and easy to implement.
+*Guarantees an optimal solution for MST problems.
+*Efficient for large delivery networks with many routes.
+*Provides a clear mathematical framework for minimizing costs.
+*Scales well and can be adapted to different logistics scenarios.
+
+6. Limitations of Greedy Approach:
+*Assumes static costs (does not adapt to traffic, fuel price changes, or dynamic constraints).
+*Focuses only on minimum cost, not delivery time or vehicle capacity.
+*Real-world logistics may require additional factors like deadlines, vehicle load balancing, or multi-objective optimization.
+*Greedy strategy works perfectly for MST problems but may fail in other optimization problems where local choices don’t lead to global optimum.
