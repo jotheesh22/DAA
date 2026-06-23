@@ -1,0 +1,149 @@
+Dynamic Programming
+
+# Investment data
+capital = [20000, 30000, 40000, 50000]
+returns = [25000, 40000, 50000, 70000]
+names = ['A', 'B', 'C', 'D']
+budget = 80000
+capital = [c // 1000 for c in capital]
+budget = budget // 1000
+n = len(capital)
+dp = [[0 for _ in range(budget + 1)] for _ in range(n + 1)]
+for i in range(1, n + 1):
+    for w in range(budget + 1):
+        if capital[i - 1] <= w:
+            dp[i][w] = max(
+                returns[i - 1] + dp[i - 1][w - capital[i - 1]],
+                dp[i - 1][w]
+            )
+        else:
+            dp[i][w] = dp[i - 1][w]
+w = budget
+selected = []
+
+for i in range(n, 0, -1):
+    if dp[i][w] != dp[i - 1][w]:
+        selected.append(names[i - 1])
+        w -= capital[i - 1]
+
+selected.reverse()
+
+print("Maximum Return: ₹", dp[n][budget])
+print("Selected Investments:", selected)
+
+Output :
+Maximum Return: ₹ 110000
+Selected Investments: ['B','D']
+
+
+1) Greedy Approach
+
+# Investment data
+investments = ['A', 'B', 'C', 'D']
+capital = [20000, 30000, 40000, 50000]
+returns = [25000, 40000, 50000, 70000]
+
+budget = 80000
+
+# Calculate Return/Capital ratio
+items = []
+
+for i in range(len(investments)):
+    ratio = returns[i] / capital[i]
+    items.append((ratio, investments[i], capital[i], returns[i]))
+
+# Sort by ratio in descending order
+items.sort(reverse=True)
+
+selected = []
+total_capital = 0
+total_return = 0
+
+for ratio, name, cap, ret in items:
+    if total_capital + cap <= budget:
+        selected.append(name)
+        total_capital += cap
+        total_return += ret
+
+print("Selected Investments:", selected)
+print("Total Capital Used: ₹", total_capital)
+print("Total Return: ₹", total_return)
+
+
+2) Dynamic programming 
+
+# Package data
+weights = [10, 20, 30, 25]
+profits = [60, 100, 120, 110]
+packages = ["P1", "P2", "P3", "P4"]
+
+capacity = 50
+n = len(weights)
+
+# DP table
+dp = [[0 for _ in range(capacity + 1)] for _ in range(n + 1)]
+
+# Fill DP table
+for i in range(1, n + 1):
+    for w in range(capacity + 1):
+        if weights[i - 1] <= w:
+            dp[i][w] = max(
+                profits[i - 1] + dp[i - 1][w - weights[i - 1]],
+                dp[i - 1][w]
+            )
+        else:
+            dp[i][w] = dp[i - 1][w]
+
+# Find selected packages
+w = capacity
+selected = []
+
+for i in range(n, 0, -1):
+    if dp[i][w] != dp[i - 1][w]:
+        selected.append(packages[i - 1])
+        w -= weights[i - 1]
+
+selected.reverse()
+
+print("Maximum Profit =", dp[n][capacity])
+print("Selected Packages =", selected)
+
+output:
+Maximum Profit = 230
+Selected Packages = ['P2', 'P3']
+
+
+2) Greedy Approach
+
+weights = [10, 20, 30, 25]
+profits = [60, 100, 120, 110]
+packages = ["P1", "P2", "P3", "P4"]
+
+capacity = 50
+
+items = []
+
+for i in range(len(weights)):
+    ratio = profits[i] / weights[i]
+    items.append((ratio, weights[i], profits[i], packages[i]))
+
+items.sort(reverse=True)
+
+selected = []
+total_profit = 0
+total_weight = 0
+
+for ratio, weight, profit, name in items:
+    if total_weight + weight <= capacity:
+        selected.append(name)
+        total_weight += weight
+        total_profit += profit
+
+print("Selected Packages =", selected)
+print("Total Weight =", total_weight)
+print("Total Profit =", total_profit)
+
+output:
+Selected Packages = ['P1', 'P2']
+Total Weight = 30
+Total Profit = 160
