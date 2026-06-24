@@ -1,0 +1,105 @@
+1). Job Scheduling using Backtracking
+
+employees = ["E1", "E2", "E3"]
+skills = {
+    "E1": ["Programming"],
+    "E2": ["Programming", "Testing"],
+    "E3": ["Testing"]
+}
+
+# Jobs: (Job Name, Required Skill)
+jobs = [
+    ("J1", "Programming"),
+    ("J2", "Testing"),
+    ("J3", "Programming")
+]
+
+assignment = {}
+
+def is_valid(employee, job_skill):
+    return job_skill in skills[employee]
+
+def schedule_jobs(job_index):
+    if job_index == len(jobs):
+        return True
+
+    job_name, job_skill = jobs[job_index]
+
+    for employee in employees:
+        if is_valid(employee, job_skill):
+
+            # Assign job
+            assignment[job_name] = employee
+
+            # Recursive call
+            if schedule_jobs(job_index + 1):
+                return True
+
+            # Backtrack
+            del assignment[job_name]
+
+    return False
+
+if schedule_jobs(0):
+    print("Job Assignment Found:\n")
+    for job, employee in assignment.items():
+        print(job, "->", employee)
+else:
+    print("No feasible assignment exists.")
+
+output
+Job Assignment Found:
+
+J1 -> E1
+J2 -> E2
+J3 -> E1
+
+
+
+2). Exam Timetabling using Graph Coloring and Backtracking
+
+n = 4
+graph = [
+    [0, 1, 0, 0],  # E1 conflicts with E2
+    [1, 0, 1, 0],  # E2 conflicts with E1 and E3
+    [0, 1, 0, 1],  # E3 conflicts with E2 and E4
+    [0, 0, 1, 0]   # E4 conflicts with E3
+]
+m = 3
+slots = [0] * n
+
+def is_safe(exam, slot):
+    for i in range(n):
+        if graph[exam][i] == 1 and slots[i] == slot:
+            return False
+    return True
+
+def solve(exam):
+    if exam == n:
+        return True
+
+    for slot in range(1, m + 1):
+        if is_safe(exam, slot):
+            slots[exam] = slot
+
+            if solve(exam + 1):
+                return True
+
+            # Backtrack
+            slots[exam] = 0
+
+    return False
+
+if solve(0):
+    print("Exam Timetable:")
+    for i in range(n):
+        print("Exam", i + 1, "-> Time Slot", slots[i])
+else:
+    print("No feasible timetable exists.")
+
+output:
+Exam Timetable:
+Exam 1 -> Time Slot 1
+Exam 2 -> Time Slot 2
+Exam 3 -> Time Slot 1
+Exam 4 -> Time Slot 2
